@@ -1,0 +1,8 @@
+name: KeepMoving
+version: ${project.version}
+main: net.kunmc.lab.keepmoving.KeepMoving
+api-version: 1.15
+commands:
+  keepmoving:
+    description: command for set delay-time to kill someone who stopped.
+    usage: /<command> [delay-time(int)]
