@@ -3,8 +3,12 @@ package net.kunmc.lab.keepmoving;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
-public class CommandListener implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CommandListener implements CommandExecutor, TabCompleter {
     private final KeepMoving instance;
 
     CommandListener(KeepMoving instance) {
@@ -24,4 +28,8 @@ public class CommandListener implements CommandExecutor {
         }
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender sender,Command command, String alias, String[] args) {
+        return new ArrayList<String>();
+    }
 }

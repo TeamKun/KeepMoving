@@ -1,6 +1,7 @@
 package net.kunmc.lab.keepmoving;
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,27 +13,27 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.HashMap;
 
 public final class KeepMoving extends JavaPlugin implements Listener {
+    private final String cmdName = "keepmoving";
     private final HashMap<String, BukkitTask> tasks = new HashMap<>();
     public int delay = 4;
     private int liquidDelay = 14;
 
-    @Override
-    public void onEnable() {
-        this.getServer().getPluginManager().registerEvents(this, this);
-        this.getCommand("keepmoving").setExecutor(new CommandListener(this));
-        getServer().broadcastMessage("KeepMove started");
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+    public void setConfig(FileConfiguration config) {
+        if(config.contains("delay")) {
+            this.delay = config.getInt("delay");
+        }
+        if (config.contains("liquidDelay")) {
+            this.liquidDelay = config.getInt("liquidDelay");
+        }
     }
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
-        Double distance = e.getFrom().distance(e.getTo());
-        if (distance == 0.0F) return;
+        double distance = e.getFrom().distance(e.getTo());
+        //リスポーン時対策
         if ((0.07840F < distance && distance < 0.07850F)) return;
+        //リスポーン直後の視点移動対策
+        if (distance == 0.0F) return;
         if ((0.0990F < distance && distance < 0.1000F)) return;
         if ((0.02150F < distance && distance < 0.02160F)) return;
 
@@ -63,5 +64,19 @@ public final class KeepMoving extends JavaPlugin implements Listener {
         public void run() {
             this.p.damage(100);
         }
+    }
+
+    @Override
+    public void onEnable() {
+        saveDefaultConfig();
+        setConfig(getConfig());
+        this.getServer().getPluginManager().registerEvents(this, this);
+        this.getCommand(cmdName).setExecutor(new CommandListener(this));
+        this.getCommand(cmdName).setTabCompleter(new CommandListener(this));
+    }
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
     }
 }
