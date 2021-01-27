@@ -72,7 +72,7 @@ public final class KeepMoving extends JavaPlugin implements Listener {
         setConfig(getConfig());
         this.getServer().getPluginManager().registerEvents(this, this);
         this.getCommand(cmdName).setExecutor(new CommandListener(this));
-        this.getCommand(cmdName).setTabCompleter(new CommandListener(this));
+        this.getCommand(cmdName).setTabCompleter(new CommandListener());
     }
 
     @Override

@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandListener implements CommandExecutor, TabCompleter {
-    private final KeepMoving instance;
+    private KeepMoving instance = null;
+
+    CommandListener(){}
 
     CommandListener(KeepMoving instance) {
         this.instance = instance;
@@ -19,9 +21,9 @@ public class CommandListener implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 1) return false;
         try {
-            Integer tick = Integer.parseInt(args[0]);
-            this.instance.delay = tick;
-            sender.sendMessage("delay-time is set to " + tick.toString());
+            Integer delay = Integer.parseInt(args[0]);
+            this.instance.delay = delay;
+            sender.sendMessage("delay is set to " + delay.toString());
             return true;
         } catch (NumberFormatException e) {
             return false;
