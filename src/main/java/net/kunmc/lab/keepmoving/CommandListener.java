@@ -11,7 +11,8 @@ import java.util.List;
 public class CommandListener implements CommandExecutor, TabCompleter {
     private KeepMoving instance = null;
 
-    CommandListener(){}
+    CommandListener() {
+    }
 
     CommandListener(KeepMoving instance) {
         this.instance = instance;
@@ -19,11 +20,18 @@ public class CommandListener implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length < 1) return false;
+        if (args.length < 2) return false;
         try {
-            Integer delay = Integer.parseInt(args[0]);
-            this.instance.delay = delay;
-            sender.sendMessage("delay is set to " + delay.toString());
+            Integer delay = Integer.parseInt(args[1]);
+            if (args[0].equals("delay")) {
+                this.instance.delay = delay;
+                sender.sendMessage("delay is set to " + delay.toString());
+            } else if (args[0].equals("liquidDelay")) {
+                this.instance.liquidDelay = delay;
+                sender.sendMessage("liquidDelay is set to " + delay.toString());
+            } else {
+                return false;
+            }
             return true;
         } catch (NumberFormatException e) {
             return false;
@@ -31,7 +39,13 @@ public class CommandListener implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender,Command command, String alias, String[] args) {
-        return new ArrayList<String>();
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> l = new ArrayList<String>();
+        if (args.length == 1) {
+            l.add("delay");
+            l.add("liquidDelay");
+        } else if (args.length == 2) {
+        }
+        return l;
     }
 }

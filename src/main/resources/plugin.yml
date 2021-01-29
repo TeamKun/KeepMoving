@@ -4,6 +4,8 @@ main: net.kunmc.lab.keepmoving.KeepMoving
 api-version: 1.15
 commands:
   keepmoving:
-    description: command for set delay-time to kill someone who stopped.
-    usage: /<command> [delay(int)]
-    permission: op
+      description: commands to adjust delay time
+      usage: |
+        /<command> delay [value(int)] - set delay(default: 4)
+        /<command> liquidDelay [value(int)] - set delay when players are in liquid(default: 14)
+      permission: op

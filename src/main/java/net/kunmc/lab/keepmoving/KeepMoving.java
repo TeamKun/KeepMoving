@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -16,7 +17,7 @@ public final class KeepMoving extends JavaPlugin implements Listener {
     private final String cmdName = "keepmoving";
     private final HashMap<String, BukkitTask> tasks = new HashMap<>();
     public int delay = 4;
-    private int liquidDelay = 14;
+    public int liquidDelay = 14;
 
     public void setConfig(FileConfiguration config) {
         if(config.contains("delay")) {
@@ -51,6 +52,12 @@ public final class KeepMoving extends JavaPlugin implements Listener {
         String name = e.getPlayer().getName();
         if (this.tasks.get(name) != null) this.tasks.get(name).cancel();
         this.tasks.put(name, new kill(e.getPlayer()).runTaskLater(this, delay));
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent e) {
+        String name = e.getEntity().getName();
+        if (this.tasks.get(name) != null) this.tasks.get(name).cancel();
     }
 
     class kill extends BukkitRunnable {
